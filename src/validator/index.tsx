@@ -30,9 +30,9 @@ export const isValidatorNumber = (rule, value, callback, percison=2, int
         message = `整数最大长度为${intNumberLength}`;
       }
       if (reg.test(value)) {
-        callback();
+            callback()
       }
-      callback(message);
+      callback(message)
     };
     /**
      * 匹配字母和数字的组合
@@ -55,9 +55,9 @@ export const isValidatorNumber = (rule, value, callback, percison=2, int
         message = `只能输入字母或数字,且长度范围为${min}~${max}`;
       }
       if (reg.test(value)) {
-        callback();
+            callback()
       }
-      callback(message);
+      callback(message)
     };
     /**
      * 处理图片预览的函数
