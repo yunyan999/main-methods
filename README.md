@@ -1,4 +1,4 @@
-# mydumi
+# dumi
 
 ## Getting Started
 

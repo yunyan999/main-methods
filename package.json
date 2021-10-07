@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "mydumi",
+  "name": "main-methods",
   "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@umijs/test": "^3.0.5",
-    "dumi": "^1.1.30",
+    "dumi": "^1.0.17",
     "father-build": "^1.17.2",
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
