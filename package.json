@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "main-methods",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -26,6 +25,10 @@
     "*.ts?(x)": [
       "prettier --parser=typescript --write"
     ]
+  },
+  "author": {
+    "name": "maoyungui",
+    "email": "1156387073@qq.com"
   },
   "dependencies": {
     "antd": "^4.16.13",
