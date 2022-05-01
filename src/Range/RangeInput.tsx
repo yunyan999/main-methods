@@ -1,9 +1,15 @@
 import { Input } from 'antd';
 import React, { useState } from 'react';
 import styles from './index.less';
-const RangeInput = ({ value = {}, onChange }) => {
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
+const RangeInput = ({
+  value = {},
+  onChange,
+}: {
+  value: object;
+  onChange: any;
+}) => {
+  const [start, setStart] = useState<any>(null);
+  const [end, setEnd] = useState<any>(null);
   const triggerChange = (changedValue: any) => {
     onChange?.({ start, end, ...value, ...changedValue });
   };

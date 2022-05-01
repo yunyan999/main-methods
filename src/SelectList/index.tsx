@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import 'antd/lib/select/style/css';
 const { Option } = Select;
@@ -8,102 +8,103 @@ export const SelectList = (props: any) => {
     selectOptions,
     dataLabel,
     dataValue,
-    showInfo,
-    showTitleInfo,
     onChange,
+    showTitle = true,
+    searchChildren = true,
+    dataColumns,
+    ...rest
   } = props;
+  const [dataList, setDataList] = useState([
+    { [dataValue]: 'noValue', [dataLabel]: 'noValue' },
+    ...dataContext,
+  ]);
+
+  const showInfo = (item: any, index: any) => {
+    return (
+      <>
+        {dataColumns.map((subItem: any, index: number) => {
+          return (
+            <span
+              key={index}
+              style={{ display: 'inline-block', width: subItem.width }}
+            >
+              {item[subItem.dataIndex]}
+            </span>
+          );
+        })}
+      </>
+    );
+  };
+  const showTitleInfo = () => {
+    return (
+      <>
+        {dataColumns.map((item: any, index: number) => {
+          return (
+            <span
+              key={index}
+              style={{ display: 'inline-block', width: item.width }}
+            >
+              {item.title}
+            </span>
+          );
+        })}
+      </>
+    );
+  };
   return (
     <>
       <Select
-        placeholder={selectOptions?.placeholder ?? '请选择'}
         showSearch
-        style={selectOptions?.style ?? { width: '100%' }}
         labelInValue={true}
-        dropdownMatchSelectWidth={
-          selectOptions?.dropdownMatchSelectWidth ?? 600
-        }
         optionLabelProp="label"
+        onChange={(value, option) => {
+          onChange && onChange(value, option);
+        }}
         filterOption={(input, option) => {
-          let length = 0,
-            data = [],
-            flag = false;
-
-          if (
-            option &&
-            Array.isArray(option.children) &&
-            option.children.length != 0
-          ) {
-            length = option.children.length;
-            data = option.children;
-          } else if (
-            option &&
-            Array.isArray(option.children.props.children) &&
-            option.children.props.children.length != 0
-          ) {
-            length = option.children.props.children.length;
-            data = option.children.props.children;
-          }
-          if (length) {
-            for (let item of data) {
-              if (item?.props && item?.props?.children) {
-                let matchData = item.props.children;
-                if (typeof matchData != 'string') {
-                  matchData = matchData.toString();
-                }
-                if (matchData.toLowerCase().indexOf(input.toLowerCase()) >= 0) {
-                  flag = true;
-                }
+          let optionLabel = option?.label?.toString();
+          if (optionLabel == 'noValue') {
+            return true;
+          } else if (optionLabel?.indexOf(input) != -1) {
+            return true;
+          } else if (searchChildren) {
+            let childrenArray = option?.children?.props?.children;
+            let flag = false;
+            for (let item of childrenArray) {
+              if (item?.props?.children?.indexOf(input) != -1) {
+                flag = true;
+                break;
               }
             }
-          }
-          if (flag) {
-            return true;
+            return flag;
           } else {
             return false;
           }
         }}
-        onChange={(value, option) => {
-          onChange(value, option);
-        }}
+        {...rest}
       >
                                         
-        {dataContext &&
-          dataContext.map((item: any, index: number) => {
-            if (showTitleInfo) {
-              if (index == 0) {
-                return (
-                  <>
-                    <Option key={'noValue'} value={'noValue'} disabled={true}>
-                      {showTitleInfo()}
-                    </Option>
-                    <Option
-                      key={index}
-                      value={item[dataValue]}
-                      label={item[dataLabel]}
-                    >
-                      {showInfo(item, index)}
-                    </Option>
-                  </>
-                );
-              } else {
-                return (
-                  <>
-                    <Option
-                      key={index}
-                      value={item[dataValue]}
-                      label={item[dataLabel]}
-                    >
-                      {showInfo(item, index)}
-                    </Option>
-                  </>
-                );
-              }
+        {Array.isArray(dataList) &&
+          dataList.length &&
+          dataList.map((item: any, index: number) => {
+            if (showTitle) {
+              return (
+                <Option
+                  key={item[dataValue]}
+                  value={item[dataValue]}
+                  label={item[dataLabel]}
+                  data-item={item}
+                  disabled={index == 0 ? true : false}
+                >
+                  {index == 0 ? showTitleInfo() : showInfo(item, index)}
+                </Option>
+              );
             } else {
               return (
                 <Option
-                  key={index}
+                  key={item[dataValue]}
                   value={item[dataValue]}
                   label={item[dataLabel]}
+                  data-item={item}
                 >
                   {showInfo(item, index)}
                 </Option>

@@ -9,41 +9,18 @@ dataLabel label 属性 用来回显的
 ```tsx
 import React from 'react';
 import { Form } from 'antd';
-import { SelectList } from 'main-methods';
+import { SelectList } from './selectList';
 import 'antd/lib/form/style/css';
 import 'antd/lib/select/style/css';
 
 export default () => {
   const dataContext = [
-    { spring: '春天', apple: 'iphone6', other: '2399' },
-    { spring: '夏天', apple: 'iphone7 plus', other: '2799' },
-    { spring: '秋天', apple: 'iphone12 pro+', other: '9999' },
+    { id: '1', spring: '春天', apple: 'iphone6', other: '2399' },
+    { id: '2', spring: '夏天', apple: 'iphone7 plus', other: '2799' },
+    { id: '3', spring: '秋天', apple: 'iphone12 pro+', other: '9999' },
   ];
-  const showInfo = (item: any, index: any) => {
-    return (
-      <>
-        <span style={{ display: 'inline-block', width: 150 }}>
-          {item.spring}
-        </span>
-        <span style={{ display: 'inline-block', width: 150 }}>
-          {item.apple}
-        </span>
-        <span style={{ display: 'inline-block', width: 150 }}>
-          {item.other}
-        </span>
-      </>
-    );
-  };
-  const showTitleInfo = () => {
-    return (
-      <>
-        <span style={{ display: 'inline-block', width: 150 }}>季节</span>
-        <span style={{ display: 'inline-block', width: 150 }}>水果</span>
-        <span style={{ display: 'inline-block', width: 150 }}>其他</span>
-      </>
-    );
-  };
-  const onChange = (value: any, option) => {
+
+  const onChange = (value: any, option: any) => {
     console.log('查看value属性', value);
     console.log('查看option属性', option);
   };
@@ -52,10 +29,15 @@ export default () => {
       <Form.Item label="下拉列表的选择框" name="item">
         <SelectList
           dataLabel="spring"
-          dataValue="apple"
+          dataValue="id"
+          searchChildren={true}
           dataContext={dataContext}
-          showInfo={showInfo}
-          showTitleInfo={showTitleInfo}
+          dropdownMatchSelectWidth={600}
+          dataColumns={[
+            { dataIndex: 'spring', title: '季节', width: 150 },
+            { dataIndex: 'apple', title: '水果', width: 150 },
+            { dataIndex: 'other', title: '其他', width: 150 },
+          ]}
           onChange={(value: any, option: any) => {
             onChange(value, option);
           }}
